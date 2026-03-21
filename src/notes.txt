@@ -1,0 +1,8 @@
+1st: win+R--> cmd
+dir(open project folder)
+to enter project: cd project_name
+my project:deep agent
+cd deep_agent
+2)env\Scripts\activate
+3)python src\gui.py
+
