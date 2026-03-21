@@ -1,14 +1,60 @@
-\# ARIA AI Research Agent
+\# ARIA — Hybrid AI Research Agent
 
 
 
-Hybrid AI agent using Gemini + Tavily + ChromaDB
+This project is a custom AI assistant built using modern LLM tools.
 
 
 
-Run:
+Features:
+
+\- Gemini API reasoning
+
+\- Tavily web search
+
+\- Vector memory (ChromaDB)
+
+\- RAG pipeline
+
+\- Session memory
+
+\- PDF knowledge support
+
+\- Model routing
+
+\- Gradio UI
+
+
+
+Tech stack:
+
+Python
+
+LangChain
+
+ChromaDB
+
+Gemini API
+
+Tavily API
+
+Gradio
+
+SentenceTransformers
+
+
+
+Run locally:
 
 
 
 python src/gui.py
+
+
+
+
+
+Goal:
+
+Build a ChatGPT-like research agent with memory + tools + web search.s
 
