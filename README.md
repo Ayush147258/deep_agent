@@ -21,16 +21,18 @@ Features:
 
 Tech stack:
 
-Python
-LangChain
-ChromaDB
-Gemini API
-Tavily API
-Gradio
-SentenceTransformers
+Python,
+LangChain,
+ChromaDB,
+Gemini API,
+Tavily API,
+Gradio,
+SentenceTransformers,
 
 Run locally:
+
 pip install -r requirements.txt
+
 python src/gui.py
 
 
