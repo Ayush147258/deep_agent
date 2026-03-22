@@ -1,10 +1,16 @@
+from ollama_llm import ask_ollama
 from config import GOOGLE_API_KEY, TAVILY_API_KEY
+
 from google import genai
 from tavily import TavilyClient
+
 import gradio as gr
 import logging
 
 logging.basicConfig(level=logging.INFO)
+
+
+# ---------------- CHROMA ----------------
 
 try:
     from langchain_chroma import Chroma
@@ -20,7 +26,10 @@ gemini = genai.Client(api_key=GOOGLE_API_KEY)
 search = TavilyClient(api_key=TAVILY_API_KEY)
 
 
+# ---------------- EMBEDDINGS ----------------
+
 print("[2/4] Loading embeddings...")
+
 embeddings = HuggingFaceEmbeddings(
     model_name="all-MiniLM-L6-v2"
 )
@@ -36,7 +45,9 @@ print("[3/4] Memory ready")
 # ---------------- MEMORY ----------------
 
 def memory_search(query):
+
     try:
+
         docs = db.similarity_search(query, k=8)
 
         texts = []
@@ -52,10 +63,13 @@ def memory_search(query):
 
 
 def memory_save(user_msg, ai_reply):
+
     try:
+
         db.add_texts(
             [f"User: {user_msg}\nAssistant: {ai_reply}"]
         )
+
     except Exception:
         pass
 
@@ -74,6 +88,7 @@ def web_search(query):
         lines = []
 
         for r in results.get("results", []):
+
             lines.append(
                 f"• {r.get('title','')}: {r.get('content','')[:300]}"
             )
@@ -81,6 +96,7 @@ def web_search(query):
         return "\n".join(lines) or "No results."
 
     except Exception as e:
+
         return f"Search error: {e}"
 
 
@@ -132,25 +148,8 @@ def chat(message, history):
 
     web = web_search(message)
 
-    prompt = f"""
-{SYSTEM}
+    msg = message.lower()
 
-===== MEMORY =====
-{mem}
-
-===== CONVERSATION =====
-{context}
-
-===== WEB =====
-{web}
-
-===== USER =====
-{message}
-
-Respond as ARIA.
-Think step by step.
-Give detailed structured answer.
-"""
 
     # -------- MODEL ROUTING --------
 
@@ -159,11 +158,44 @@ Give detailed structured answer.
     if len(message) > 120:
         model_name = "gemini-2.5-pro"
 
-    if "research" in message.lower():
+    if "research" in msg:
         model_name = "gemini-2.5-pro"
 
-    if "explain in detail" in message.lower():
+    if "explain" in msg:
         model_name = "gemini-2.5-pro"
+
+    if "why" in msg:
+        model_name = "gemini-2.5-pro"
+
+    if "how" in msg:
+        model_name = "gemini-2.5-pro"
+
+    if "detail" in msg:
+        model_name = "gemini-2.5-pro"
+
+
+    # -------- PROMPT (FIXED) --------
+
+    prompt = f"""
+{SYSTEM}
+
+Conversation:
+{context}
+
+Memory:
+{mem}
+
+Web:
+{web}
+
+User:
+{message}
+
+Answer as ARIA:
+"""
+
+
+    # -------- GEMINI --------
 
     try:
 
@@ -176,7 +208,10 @@ Give detailed structured answer.
 
     except Exception as e:
 
-        answer = f"⚠️ Gemini error: {e}"
+        print("Gemini failed → using Ollama")
+
+        answer = ask_ollama(prompt)
+
 
     session.append({
         "role": "assistant",
@@ -188,14 +223,16 @@ Give detailed structured answer.
     return answer
 
 
-print("[4/4] Building UI...")
+# ---------------- UI ----------------
 
+print("[4/4] Building UI...")
 
 demo = gr.ChatInterface(
     fn=chat,
     title="ARIA — AI Research Assistant",
-    description="Gemini + Tavily + Memory",
+    description="Gemini + Tavily + Memory + Ollama",
 )
+
 
 print("Launching on http://localhost:7860")
 

@@ -1,8 +1,21 @@
 1st: win+R--> cmd
 dir(open project folder)
 to enter project: cd project_name
+to exit project: cd ..
 my project:deep agent
 cd deep_agent
-2)env\Scripts\activate
+2)env\Scripts\activate(activate virtual environment)
 3)python src\gui.py
 
+
+GitHub (if any edit in terminal then update)
+edit in readme md file
+command in terminal: 
+git add .
+git commit -m "improve readme"
+git push
+
+after deleting unnessary folderS
+git add .
+git commit -m "clean repo"
+git push

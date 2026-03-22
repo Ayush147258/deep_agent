@@ -1,0 +1,16 @@
+env/
+venv/
+
+memory/
+
+notes.txt
+src/notes.txt
+
+.env
+
+__pycache__/
+*.pyc
+*.db
+*.log
+
+config.py
