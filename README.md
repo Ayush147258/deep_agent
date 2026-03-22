@@ -2,8 +2,16 @@
 
 
 
-This project is a custom AI assistant built using modern LLM tools.
 
+## UI
+
+![UI](docs/docsui.png)
+
+## Example Response
+
+![Chat](docs/docschat.png)
+
+This project is a custom AI assistant built using modern LLM tools.
 
 
 Features:
@@ -42,5 +50,4 @@ python src/gui.py
 
 Goal:
 
-Build a ChatGPT-like research agent with memory + tools + web search.s
-
+Build a ChatGPT-like research agent with memory + tools + web search.
